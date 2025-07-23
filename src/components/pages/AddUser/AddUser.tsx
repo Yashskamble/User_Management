@@ -4,9 +4,15 @@ import styles from "./AddUser.module.css";
 
 const AddUser = () => {
   const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate("/");
+    localStorage.removeItem("formData");
+  };
+
   return (
     <>
-      <div className={styles.back} onClick={() => navigate("/")}>
+      <div className={styles.back} onClick={handleBackClick}>
         {"< Back"}
       </div>
       <Form />;

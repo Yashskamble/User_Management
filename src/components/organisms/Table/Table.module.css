@@ -24,3 +24,15 @@
     background-color: rgb(110, 14, 205);
     color: snow;
 }
+
+.tableWrapper {
+  width: 100%;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.noDataText {
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 2rem;
+}

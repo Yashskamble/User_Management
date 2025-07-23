@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface User {
+export interface User {
   fullName: string;
   email: string;
   contact: string;
@@ -10,25 +10,25 @@ interface User {
   pincode: string;
 }
 
-interface UserState {
+interface UsersState {
   users: User[];
 }
 
-const initialState: UserState = {
-  users: [],
+const initialState: UsersState = {
+  users: JSON.parse(localStorage.getItem("users") || "[]"),
 };
 
-const UsersSlice = createSlice({
-  name: "Users",
+const usersSlice = createSlice({
+  name: "users",
   initialState,
   reducers: {
-    addUser(state, action: PayloadAction<User>) {
-      const existingUser = [...state.users];
-      existingUser.push(action.payload);
-      state.users = existingUser;
+    addUser: (state, action: PayloadAction<User>) => {
+      state.users.push(action.payload);
+
+      localStorage.setItem("users", JSON.stringify(state.users));
     },
   },
 });
 
-export const { addUser } = UsersSlice.actions;
-export default UsersSlice.reducer;
+export const { addUser } = usersSlice.actions;
+export default usersSlice.reducer;

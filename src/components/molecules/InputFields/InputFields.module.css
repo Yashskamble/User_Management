@@ -8,6 +8,8 @@
     width: 300px;
     font-family: 'Nunito', sans-serif;
     font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid rgb(86, 2, 187);
 }
 
 .label {
@@ -15,4 +17,13 @@
     font-size: large;
     font-weight: 600;
     color: black;
+}
+
+.error {
+    color: red;
+    margin: 5px;
+}
+
+.errorInput {
+    border: 1px solid red;
 }

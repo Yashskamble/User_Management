@@ -1,52 +1,47 @@
-import { useRef, useState } from "react";
 import styles from "./InputFields.module.css";
 
-interface InputFieldsProps {
+type InputFieldsProps = {
   label: string;
+  value: string;
+  onChange: (val: string) => void;
+  onBlur?: () => void;
+  error?: string;
   textarea?: boolean;
   select?: boolean;
   options?: string[];
-}
+};
 
 const InputFields = ({
   label,
   textarea,
   select,
   options,
+  value,
+  onChange,
+  onBlur,
+  error,
 }: InputFieldsProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const selectRef = useRef<HTMLSelectElement>(null);
-  const [error, setError] = useState("");
-
-  const handleBlur = () => {
-    if (inputRef) {
-      if (inputRef.current?.textContent === "") {
-        setError(`${label} is required`);
-      }
-    }
-  };
-
   const renderInput = () => {
     if (textarea) {
       return (
         <textarea
-          ref={textareaRef}
           placeholder={label}
-          className={styles.input}
+          className={`${styles.input} ${error ? styles.errorInput : ""}`}
           rows={4}
-          onBlur={handleBlur}
+          onBlur={onBlur}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
         />
       );
     } else if (select) {
       return (
         <select
-          defaultValue=""
-          className={styles.input}
-          ref={selectRef}
-          onBlur={handleBlur}
+          className={`${styles.input} ${error ? styles.errorInput : ""}`}
+          onBlur={onBlur}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
         >
-          <option value="" disabled hidden>
+          <option value="" disabled>
             Select
           </option>
           {options?.map((opt, i) => (
@@ -60,10 +55,11 @@ const InputFields = ({
       return (
         <input
           type="text"
-          className={styles.input}
           placeholder={label}
-          ref={inputRef}
-          onBlur={handleBlur}
+          className={`${styles.input} ${error ? styles.errorInput : ""}`}
+          onBlur={onBlur}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
         />
       );
     }
@@ -72,11 +68,11 @@ const InputFields = ({
   return (
     <div className={styles.InputFields}>
       <label className={styles.label} htmlFor={label}>
-        {label} :{" "}
+        {label}:
       </label>
       <div>
         {renderInput()}
-        <p>{error}</p>
+        {error && <p className={styles.error}>{error}</p>}
       </div>
     </div>
   );
