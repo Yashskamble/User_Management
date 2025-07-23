@@ -1,0 +1,12 @@
+.back {
+    margin: 10px;
+    color: rgb(86, 2, 187);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.back:hover {
+    color: black;
+    text-decoration: underline;
+    cursor: pointer;
+}

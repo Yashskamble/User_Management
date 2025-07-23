@@ -1,0 +1,17 @@
+.formPage {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin: 20px;
+}
+
+.submitBtn {
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,18 @@
+.button {
+    padding: 10px;
+    background-color: rgb(86, 2, 187);
+    color: white;
+    border-radius: 10px;
+    border: 1px solid snow;
+    width: 200px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: snow;
+    color: rgb(86, 2, 187);
+    border: 1px solid rgb(86, 2, 187);
+    font-size: 18px;
+    font-weight: bold;
+}
