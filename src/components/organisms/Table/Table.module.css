@@ -27,13 +27,29 @@
 }
 
 .tableWrapper {
-  width: 100%;
-  margin-top: 1rem;
-  text-align: center;
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
 }
 
 .noDataText {
-  font-size: 1.2rem;
-  color: #666;
-  margin-top: 2rem;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 2rem;
+}
+
+.editButton {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.editButton:hover {
+    border: 1px solid #45a049;
+    background-color: #e5f2e6;
+    color: black;
 }

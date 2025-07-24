@@ -1,12 +1,22 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import { RootState } from "../../../store/store";
+import { setSelectedUser } from "../../../store/usersSlice";
 
 import styles from "./Table.module.css";
 import { formatAddress } from "../../../utils/formatAddress";
 import { TABLE_HEADERS } from "../../../constants/tableConstant";
 
 const Table = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const users = useSelector((state: RootState) => state.users.users);
+
+  const handleEdit = (user: typeof users[number]) => {
+    dispatch(setSelectedUser(user));
+    navigate("/add-user");
+  };
 
   return (
     <div className={styles.tableWrapper}>
@@ -21,27 +31,45 @@ const Table = () => {
                   {header}
                 </th>
               ))}
+              <th className={styles.TableHeader}>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users.map(
-              ({ fullName, email, contact, address, city, state, pincode }, index) => {
-                const rowClass = `${styles.TableItem} ${
-                  index % 2 === 0 ? styles.evenRow : styles.oddRow
-                }`;
+            {users.map((user, index) => {
+              const {
+                fullName,
+                email,
+                contact,
+                address,
+                city,
+                state,
+                pincode,
+              } = user;
 
-                return (
-                  <tr key={email}>
-                    <td className={rowClass}>{fullName}</td>
-                    <td className={rowClass}>{email}</td>
-                    <td className={rowClass}>{contact}</td>
-                    <td className={rowClass}>
-                      {formatAddress(address, city, state, pincode)}
-                    </td>
-                  </tr>
-                );
-              }
-            )}
+              const rowClass = `${styles.TableItem} ${
+                index % 2 === 0 ? styles.evenRow : styles.oddRow
+              }`;
+
+              return (
+                <tr key={email}>
+                  <td className={rowClass}>{fullName}</td>
+                  <td className={rowClass}>{email}</td>
+                  <td className={rowClass}>{contact}</td>
+                  <td className={rowClass}>
+                    {formatAddress(address, city, state, pincode)}
+                  </td>
+                  <td className={rowClass}>
+                    <button
+                      type="button"
+                      className={styles.editButton}
+                      onClick={() => handleEdit(user)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

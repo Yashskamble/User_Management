@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 
-import { AppDispatch } from "../../../store/store";
-import { addUser } from "../../../store/usersSlice";
+import { AppDispatch, RootState } from "../../../store/store";
+import { addUser, editUser, clearSelectedUser } from "../../../store/usersSlice";
 
 import Button from "../../atoms/Button/Button";
 import Header from "../../atoms/Header/Header";
@@ -29,6 +29,8 @@ const Form = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
+  const selectedUser = useSelector((state: RootState) => state.users.selectedUser);
+
   const formik = useFormik<FormData>({
     initialValues: {
       fullName: "",
@@ -42,20 +44,31 @@ const Form = () => {
     validationSchema: formValidationSchema,
     onSubmit: (values) => {
       if (!formik.dirty) return;
-      dispatch(addUser(values));
+
+      if (selectedUser) {
+        dispatch(editUser(values));
+        dispatch(clearSelectedUser());
+      } else {
+        dispatch(addUser(values));
+      }
+
       removeLocalStorage(LOCAL_STORAGE_KEYS.FORM_DATA);
       navigate("/");
     },
   });
 
   useEffect(() => {
-    const stored = getLocalStorage(LOCAL_STORAGE_KEYS.FORM_DATA);
-    if (stored) formik.setValues(stored);
+    if (selectedUser) {
+      formik.setValues(selectedUser);
+    } else {
+      const stored = getLocalStorage(LOCAL_STORAGE_KEYS.FORM_DATA);
+      if (stored) formik.setValues(stored);
+    }
     setIsLoading(true);
   }, []);
 
   useEffect(() => {
-    if (!isLoading) return;
+    if (!isLoading || selectedUser) return;
     const debounce = setTimeout(() => {
       setLocalStorage(LOCAL_STORAGE_KEYS.FORM_DATA, formik.values);
     }, 300);
@@ -66,7 +79,7 @@ const Form = () => {
 
   return (
     <div className={styles.formPage}>
-      <Header label="Add User" />
+      <Header label={selectedUser ? "Edit User" : "Add User"} />
       <form className={styles.form} onSubmit={formik.handleSubmit}>
         {fieldConfig.map((field) => (
           <InputFields
@@ -90,7 +103,7 @@ const Form = () => {
           />
         ))}
         <div className={styles.submitBtn}>
-          <Button label="Submit" type="submit" />
+          <Button label={selectedUser ? "Update" : "Submit"} type="submit" />
         </div>
       </form>
     </div>
