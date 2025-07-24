@@ -13,33 +13,45 @@ type InputFieldsProps = {
 
 const InputFields = ({
   label,
-  textarea,
-  select,
-  options,
   value,
   onChange,
   onBlur,
   error,
+  textarea,
+  select,
+  options,
 }: InputFieldsProps) => {
+  const id = label.toLowerCase().replace(/\s+/g, "-");
+
+  const inputClass = `${styles.input} ${error ? styles.errorInput : ""}`;
+
   const renderInput = () => {
     if (textarea) {
       return (
         <textarea
+          id={id}
           placeholder={label}
-          className={`${styles.input} ${error ? styles.errorInput : ""}`}
+          className={inputClass}
           rows={4}
-          onBlur={onBlur}
           value={value}
+          onBlur={onBlur}
           onChange={(e) => onChange(e.target.value)}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
         />
       );
-    } else if (select) {
+    }
+
+    if (select) {
       return (
         <select
-          className={`${styles.input} ${error ? styles.errorInput : ""}`}
-          onBlur={onBlur}
+          id={id}
+          className={inputClass}
           value={value}
+          onBlur={onBlur}
           onChange={(e) => onChange(e.target.value)}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
         >
           <option value="" disabled>
             Select
@@ -51,28 +63,35 @@ const InputFields = ({
           ))}
         </select>
       );
-    } else {
-      return (
-        <input
-          type="text"
-          placeholder={label}
-          className={`${styles.input} ${error ? styles.errorInput : ""}`}
-          onBlur={onBlur}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      );
     }
+
+    return (
+      <input
+        id={id}
+        type="text"
+        placeholder={label}
+        className={inputClass}
+        value={value}
+        onBlur={onBlur}
+        onChange={(e) => onChange(e.target.value)}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
+      />
+    );
   };
 
   return (
     <div className={styles.InputFields}>
-      <label className={styles.label} htmlFor={label}>
+      <label htmlFor={id} className={styles.label}>
         {label}:
       </label>
       <div>
         {renderInput()}
-        {error && <p className={styles.error}>{error}</p>}
+        {error && (
+          <p id={`${id}-error`} className={styles.error}>
+            {error}
+          </p>
+        )}
       </div>
     </div>
   );

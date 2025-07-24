@@ -1,13 +1,9 @@
 import { useSelector } from "react-redux";
-import styles from "./Table.module.css";
 import { RootState } from "../../../store/store";
 
-const TableHeaders = [
-  "Full Name",
-  "Email Address",
-  "Contact Number",
-  "Address",
-];
+import styles from "./Table.module.css";
+import { formatAddress } from "../../../utils/formatAddress";
+import { TABLE_HEADERS } from "../../../constants/tableConstant";
 
 const Table = () => {
   const users = useSelector((state: RootState) => state.users.users);
@@ -17,11 +13,11 @@ const Table = () => {
       {users.length === 0 ? (
         <p className={styles.noDataText}>No users found.</p>
       ) : (
-        <table className={styles.table}>
+        <table className={styles.table} aria-label="User Data Table">
           <thead>
             <tr>
-              {TableHeaders.map((header, index) => (
-                <th key={index} className={styles.TableHeader}>
+              {TABLE_HEADERS.map((header) => (
+                <th key={header} className={styles.TableHeader}>
                   {header}
                 </th>
               ))}
@@ -29,20 +25,19 @@ const Table = () => {
           </thead>
           <tbody>
             {users.map(
-              (
-                { fullName, email, contact, address, city, state, pincode },
-                index
-              ) => {
-                const fullAddress = [address, city, state, pincode].join(", ");
-                const classes = `${styles.TableItem} ${
-                  index % 2 !== 0 ? styles.oddRow : styles.evenRow
+              ({ fullName, email, contact, address, city, state, pincode }, index) => {
+                const rowClass = `${styles.TableItem} ${
+                  index % 2 === 0 ? styles.evenRow : styles.oddRow
                 }`;
+
                 return (
-                  <tr key={index}>
-                    <td className={classes}>{fullName}</td>
-                    <td className={classes}>{email}</td>
-                    <td className={classes}>{contact}</td>
-                    <td className={classes}>{fullAddress}</td>
+                  <tr key={email}>
+                    <td className={rowClass}>{fullName}</td>
+                    <td className={rowClass}>{email}</td>
+                    <td className={rowClass}>{contact}</td>
+                    <td className={rowClass}>
+                      {formatAddress(address, city, state, pincode)}
+                    </td>
                   </tr>
                 );
               }

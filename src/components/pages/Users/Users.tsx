@@ -15,7 +15,7 @@ const Users = () => {
     <>
       <Header label="All Users" />
       <div className={styles.addUser}>
-        <Button label="Add User" onClick={handleAddUserClick} />
+        <Button label="Add User" type="button" onClick={handleAddUserClick} />
       </div>
       <Table />
     </>

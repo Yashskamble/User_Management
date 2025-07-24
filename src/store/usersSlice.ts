@@ -14,8 +14,9 @@ interface UsersState {
   users: User[];
 }
 
+const usersFromStorage = localStorage.getItem("users");
 const initialState: UsersState = {
-  users: JSON.parse(localStorage.getItem("users") || "[]"),
+  users: usersFromStorage ? JSON.parse(usersFromStorage) : [],
 };
 
 const usersSlice = createSlice({
@@ -23,12 +24,16 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action: PayloadAction<User>) => {
-      state.users.push(action.payload);
-
-      localStorage.setItem("users", JSON.stringify(state.users));
+      state.users = [...state.users, action.payload];
+    },
+    editUser: (state, action: PayloadAction<User>) => {
+      const updatedUsers = state.users.map((user) =>
+        user.email === action.payload.email ? action.payload : user
+      );
+      state.users = updatedUsers;
     },
   },
 });
 
-export const { addUser } = usersSlice.actions;
+export const { addUser, editUser } = usersSlice.actions;
 export default usersSlice.reducer;

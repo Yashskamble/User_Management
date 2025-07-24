@@ -1,11 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import UserReducer from "./usersSlice";
+import usersReducer from "./usersSlice";
+import { LOCAL_STORAGE_KEYS } from "../constants/storageKeys";
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
-    users: UserReducer,
+    users: usersReducer,
   },
+});
+
+store.subscribe(() => {
+  const { users } = store.getState().users;
+  localStorage.setItem(LOCAL_STORAGE_KEYS.USERS, JSON.stringify(users));
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export default store;
