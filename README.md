@@ -1,46 +1,126 @@
-# Getting Started with Create React App
+# User Management UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modular, responsive React + TypeScript application for managing user details. Built with Formik, Yup, Redux Toolkit, and localStorage for a seamless and offline-friendly form experience.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Overview
 
-### `npm start`
+This app allows users to:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Add new users via a dynamic form
+- Edit existing users from a table view
+- Persist form state across reloads using localStorage
+- Validate inputs with `Yup` and prevent invalid submissions
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Reusable form components (`InputFields`, `Form`)
+- Form validation using **Formik + Yup**
+- Persistent storage via `localStorage`
+- State management with **Redux Toolkit**
+- Built-in validation for contact and pincode fields
+- Navigation between pages using **React Router v6**
+- Accessible and semantic table for user listing
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Category         | Tool/Library             |
+| ---------------- | ------------------------ |
+| Framework        | React + TypeScript       |
+| Routing          | React Router             |
+| State Management | Redux Toolkit            |
+| Form Handling    | Formik                   |
+| Validation       | Yup                      |
+| Styling          | CSS Modules              |
+| Persistence      | LocalStorage             |
+| Utilities        | Custom utils & constants |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Folder Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+src/
+├── components/
+│ ├── atoms/ # Basic reusable UI components (Button, Header)
+│ ├── molecules/ # Combined form elements (InputFields)
+│ ├── organisms/ # Larger UI blocks (Form, Table)
+│ └── pages/ # Route-level components (Users, AddUser)
+├── constants/ # Static constants (table headers, field configs)
+├── store/ # Redux store setup and slices
+├── types/ # TypeScript type definitions
+├── utils/ # Utility functions (localStorage, validation helpers)
+├── validation/ # Yup validation schemas
+├── App.tsx # Main routing logic
+├── index.tsx # Entry point
+└── index.css # Global styles
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Getting Started
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 1. Clone the Repository
 
-## Learn More
+```bash
+git clone https://github.com/your-username/user-management-ui.git
+cd user-management-ui
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 2. Install Dependencies
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm install
+```
+
+### 3. Run the App Locally
+
+```bash
+npm start
+```
+
+The app will be available at http://localhost:3000.
+
+---
+
+### Form Structure & Validation
+
+| Field       | Validation Rules                       |
+| ----------- | -------------------------------------- |
+| Full Name   | Required, only letters and spaces      |
+| Email       | Required, must be a valid email        |
+| Contact No. | Required, exactly 10 digits            |
+| Address     | Required, min 5 characters             |
+| City        | Required, only letters                 |
+| State       | Required, must be selected from a list |
+| Pincode     | Required, exactly 6 digits             |
+
+All validation is handled using Yup schemas integrated with Formik.
+
+---
+
+### State Management
+
+This app uses Redux Toolkit for global state and localStorage for data persistence.
+
+- usersSlice.ts: Stores user list and selected user.
+
+- store.ts: Redux store configuration.
+
+- localStorageUtiltiy.ts: Handles get/set/remove logic.
+
+Data persists even after page reloads using store.subscribe().
+
+---
+
+### Deployment
+The app is live on Vercel:
+
+Live Demo: https://user-management-khaki-pi.vercel.app
+
+---
